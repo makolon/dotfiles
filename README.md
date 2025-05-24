@@ -20,18 +20,6 @@
     brew install fish
     ```
 
-- [htop](https://github.com/htop-dev/htop)
-
-    ```bash
-    brew install htop
-    ```
-
-- [jq](https://github.com/jqlang/jq)
-
-    ```bash
-    brew install jq
-    ```
-
 - [kitty](https://github.com/kovidgoyal/kitty)
 
     ```bash
