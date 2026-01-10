@@ -1,0 +1,54 @@
+# -----------------------------
+# AeroSpace-friendly Ghostty config
+# -----------------------------
+
+# --- Window / Titlebar ---
+# Disable macOS native tabs (helps avoid the “extra empty space” behavior in AeroSpace)
+# NOTE: This may change macOS fullscreen/native window behavior.
+window-decoration = auto
+
+# Titlebar appearance (even with `none`, this may have limited effect; optional)
+macos-titlebar-style = transparent
+
+# --- Font ---
+font-family = "JetBrains Mono"
+font-size = 11
+
+# Treat the Option key as Alt (often makes terminal shortcuts more consistent)
+macos-option-as-alt = true
+
+# --- Padding ---
+window-padding-x = 8
+window-padding-y = 6
+window-padding-balance = true
+
+# --- Background ---
+background-opacity = 0.92
+background-blur = true
+
+# --- Shell integration ---
+shell-integration = detect
+# Propagate a compatible TERM / environment over SSH (useful)
+shell-integration-features = ssh-env
+
+# --- Close behavior ---
+confirm-close-surface = false
+
+# --- Keybinds ---
+# Ghostty keybind format: keybind = trigger=action
+# Example actions: new_window / new_tab / new_split / close_surface
+
+# Create next/prev tab
+keybind = ctrl+tab=next_tab
+keybind = ctrl+shift+tab=previous_tab
+
+# Split to the right / down (optional)
+keybind = cmd+d=new_split:right
+keybind = cmd+shift+d=new_split:down
+
+# Close
+keybind = cmd+w=close_surface
+
+# Reload config (handy for testing changes)
+keybind = cmd+shift+r=reload_config
+
