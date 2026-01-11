@@ -31,12 +31,32 @@ function vim
   nvim $argv
 end
 
-# neofetch
-function neo
-  neofetch
+# fastfetch
+function fast
+  fastfetch
 end
 
 # starship
 set -gx STARSHIP_CONFIG ~/.config/starship/starship.toml
 starship init fish | source
 
+function kdev
+  # 1. Set title for the current window
+  kitty @ set-window-title "Editor"
+
+  # 2. Ensure we are using 'splits' layout
+  kitty @ goto-layout splits
+
+  # 3. Launch Claude Code (Right side)
+  kitty @ launch --location=vsplit --type=window fish -c "claude"
+
+  # 4. Launch a Terminal in a horizontal split (Bottom Right)
+  # This splits the Claude window (which is currently focused)
+  kitty @ launch --location=hsplit --type=window fish
+
+  # 5. Focus back to the first window
+  kitty @ focus-window --match nthe:0
+
+  # 6. Start nvim
+  nvim .
+end

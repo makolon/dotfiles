@@ -16,7 +16,6 @@ def handle_result(args, result, target_window_id, boss):
     neighbors = boss.active_tab.current_layout.neighbors_for_window(
         window, boss.active_tab.windows
     )
-    current_window_id = boss.active_tab.active_window
 
     left_neighbors = neighbors.get("left")
     right_neighbors = neighbors.get("right")
