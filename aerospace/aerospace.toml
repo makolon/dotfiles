@@ -62,8 +62,8 @@ outer.left =       10
 outer.bottom =     10
 outer.right =      10
 outer.top = [
-  { monitor."monitor.VY249" = 35 },
-  { monitor."DELL.*S2725QC" = 40 },
+  { monitor."monitor.*" = 35 },
+  { monitor."DELL.*" = 40},
   10
 ]
 
