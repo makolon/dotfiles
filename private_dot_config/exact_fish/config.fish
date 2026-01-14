@@ -4,10 +4,13 @@ fish_add_path /opt/homebrew/sbin
 # theme
 set fish_theme agnoster
 
-# peco
+# peco & ghz + fzf
 function fish_user_key_bindings
-  bind \cr 'peco_select_history (commandline -b)'
+  # History search via peco bind \cr 'peco_select_history (commandline -b)'
   bind \c] peco_select_ghq_repository
+
+  # ghq + fzf repo switch
+  bind \cg ghq_fzf_repo
 end
 
 # ghq + fzf
@@ -16,11 +19,6 @@ function ghq_fzf_repo -d 'Repository search'
   [ -n "$select" ]; and cd "$select"
   echo " $select "
   commandline -f repaint
-end
-
-# fish key bindings
-function fish_user_key_bindings
-  bind \cg ghq_fzf_repo
 end
 
 # neovim
@@ -40,23 +38,34 @@ end
 set -gx STARSHIP_CONFIG ~/.config/starship/starship.toml
 starship init fish | source
 
-function kdev
-  # 1. Set title for the current window
-  kitty @ set-window-title "Editor"
+# color
+set -gx TERM xterm-256color
+set -gx COLORTERM truecolor
 
-  # 2. Ensure we are using 'splits' layout
+# develp terminal
+function kdev
+  # Make the current window deterministic
+  kitty @ set-window-title "Editor"
   kitty @ goto-layout splits
 
-  # 3. Launch Claude Code (Right side)
-  kitty @ launch --location=vsplit --type=window fish -c "claude"
+  # 1) Right-top: Codex
+  kitty @ launch \
+    --location=vsplit \
+    --type=window \
+    --title="Codex" \
+    --cwd "$PWD" \
+    fish -lc "codex"
 
-  # 4. Launch a Terminal in a horizontal split (Bottom Right)
-  # This splits the Claude window (which is currently focused)
-  kitty @ launch --location=hsplit --type=window fish
+  # 2) Split the Codex window horizontally to create right-bottom, then run lazygit there
+  kitty @ focus-window --match title:Codex
+  kitty @ launch \
+    --location=hsplit \
+    --type=window \
+    --title="lazygit" \
+    --cwd "$PWD" \
+    fish -lc "lazygit"
 
-  # 5. Focus back to the first window
-  kitty @ focus-window --match nthe:0
-
-  # 6. Start nvim
+  # 3) Back to left, open Neovim in current directory
+  kitty @ focus-window --match title:Editor
   nvim .
 end
