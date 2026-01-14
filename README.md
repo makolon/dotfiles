@@ -138,7 +138,8 @@ git push
     ├── exact_kitty/                      # Kitty terminal configuration
     ├── exact_neofetch/                   # Neofetch configuration
     ├── exact_sketchybar/                 # SketchyBar configuration
-    └── exact_starship/                   # Starship prompt configuration
+    ├── exact_starship/                   # Starship prompt configuration
+    └── exact_tmux/                       # Tmux configuration
 ```
 
 ## 🔒 Security
