@@ -1,0 +1,73 @@
+#!/bin/bash
+
+set -eufo pipefail
+
+echo "==> Installing Homebrew packages..."
+
+# Check if Homebrew is installed
+if ! command -v brew &>/dev/null; then
+    echo "Homebrew is not installed. Installing..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# Update Homebrew
+brew update
+
+# Install formulae
+packages=(
+    "fish"
+    "neovim"
+    "neofetch"
+    "fastfetch"
+    "starship"
+    "fzf"
+    "ghq"
+    "peco"
+)
+
+for package in "${packages[@]}"; do
+    if brew list "$package" &>/dev/null; then
+        echo "$package is already installed"
+    else
+        echo "Installing $package..."
+        brew install "$package"
+    fi
+done
+
+# Install casks
+casks=(
+    "nikitabobko/tap/aerospace"
+    "kitty"
+    "ghostty"
+)
+
+for cask in "${casks[@]}"; do
+    cask_name=$(basename "$cask")
+    if brew list --cask "$cask_name" &>/dev/null; then
+        echo "$cask_name is already installed"
+    else
+        echo "Installing $cask..."
+        brew install --cask "$cask"
+    fi
+done
+
+# Install FelixKratz formulae
+if ! brew tap | grep -q "FelixKratz/formulae"; then
+    brew tap FelixKratz/formulae
+fi
+
+felixkratz_packages=(
+    "borders"
+    "sketchybar"
+)
+
+for package in "${felixkratz_packages[@]}"; do
+    if brew list "$package" &>/dev/null; then
+        echo "$package is already installed"
+    else
+        echo "Installing $package..."
+        brew install "$package"
+    fi
+done
+
+echo "==> All packages installed successfully!"
