@@ -5,4 +5,6 @@ MIGRATION.md
 .gitignore
 .DS_Store
 
+# ignore fish_variables
+private_dot_config/fish/fish_variables
 

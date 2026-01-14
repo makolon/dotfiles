@@ -130,15 +130,15 @@ git push
 ├── run_once_install-packages.sh.tmpl     # Package installation script
 ├── run_once_after_setup-fish.sh.tmpl     # Fish shell setup script
 └── private_dot_config/                   # ~/.config directory
-    ├── aerospace/                        # AeroSpace configuration
-    ├── borders/                          # JankyBorders configuration
-    ├── fastfetch/                        # Fastfetch configuration
-    ├── fish/                             # Fish shell configuration
-    ├── ghostty/                          # Ghostty terminal configuration
-    ├── kitty/                            # Kitty terminal configuration
-    ├── neofetch/                         # Neofetch configuration
-    ├── sketchybar/                       # SketchyBar configuration
-    └── starship/                         # Starship prompt configuration
+    ├── exact_aerospace/                  # AeroSpace configuration
+    ├── exact_borders/                    # JankyBorders configuration
+    ├── exact_fastfetch/                  # Fastfetch configuration
+    ├── exact_fish/                       # Fish shell configuration
+    ├── exact_ghostty/                    # Ghostty terminal configuration
+    ├── exact_kitty/                      # Kitty terminal configuration
+    ├── exact_neofetch/                   # Neofetch configuration
+    ├── exact_sketchybar/                 # SketchyBar configuration
+    └── exact_starship/                   # Starship prompt configuration
 ```
 
 ## 🔒 Security
