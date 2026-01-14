@@ -47,7 +47,14 @@ for cask in "${casks[@]}"; do
         echo "$cask_name is already installed"
     else
         echo "Installing $cask..."
-        brew install --cask "$cask"
+        if ! brew install --cask "$cask" 2>/dev/null; then
+            # If installation fails, check if it's already installed
+            if brew list --cask "$cask_name" &>/dev/null; then
+                echo "$cask_name is now installed"
+            else
+                echo "Warning: Failed to install $cask_name, but continuing..."
+            fi
+        fi
     fi
 done
 
