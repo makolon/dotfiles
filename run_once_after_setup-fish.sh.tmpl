@@ -15,7 +15,12 @@ if ! command -v fish &>/dev/null; then
     exit 0
 fi
 
-FISH_PATH=$(which fish)
+# Prefer Nix-installed fish over Homebrew
+if [ -x "$HOME/.nix-profile/bin/fish" ]; then
+    FISH_PATH="$HOME/.nix-profile/bin/fish"
+else
+    FISH_PATH=$(which fish)
+fi
 
 # Add fish to /etc/shells if not already present
 if ! grep -q "$FISH_PATH" /etc/shells; then

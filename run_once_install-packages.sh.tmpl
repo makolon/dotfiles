@@ -3,7 +3,7 @@
 set -eufo pipefail
 
 # =============================================================================
-# Nix: CLI tools
+# Nix: declarative CLI tools via flake.nix
 # =============================================================================
 
 echo "==> Installing Nix packages..."
@@ -12,32 +12,14 @@ if ! command -v nix &>/dev/null; then
     echo "Nix is not installed. Installing via Determinate Systems installer..."
     curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm
 
-    # Source nix for current session
     if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
         . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
     fi
 fi
 
-nix_packages=(
-    "nixpkgs#fish"
-    "nixpkgs#neovim"
-    "nixpkgs#neofetch"
-    "nixpkgs#fastfetch"
-    "nixpkgs#starship"
-    "nixpkgs#fzf"
-    "nixpkgs#ghq"
-    "nixpkgs#peco"
-)
-
-for package in "${nix_packages[@]}"; do
-    pkg_name="${package#nixpkgs#}"
-    if nix profile list | grep -q "\.${pkg_name}\b"; then
-        echo "$pkg_name is already installed via Nix"
-    else
-        echo "Installing $pkg_name via Nix..."
-        nix profile install "$package"
-    fi
-done
+CHEZMOI_SOURCE="{{ .chezmoi.sourceDir }}"
+echo "Installing CLI tools from flake at $CHEZMOI_SOURCE..."
+nix profile install "path:${CHEZMOI_SOURCE}"
 
 # =============================================================================
 # Homebrew: macOS GUI apps and platform-specific formulae
@@ -75,7 +57,6 @@ for cask in "${casks[@]}"; do
     fi
 done
 
-# FelixKratz formulae (macOS-only)
 if ! brew tap | grep -q "FelixKratz/formulae"; then
     brew tap FelixKratz/formulae
 fi

@@ -63,9 +63,9 @@ chezmoi apply
 
 ## 📦 What Gets Installed
 
-The `run_once_install-packages.sh` script will automatically install:
+CLI tools are managed declaratively via `flake.nix` with pinned versions (`flake.lock`). macOS GUI apps use Homebrew casks.
 
-**Nix Packages (CLI tools):**
+**Nix Packages (CLI tools, declared in `flake.nix`):**
 - fish
 - neovim
 - neofetch
@@ -96,6 +96,24 @@ chezmoi update
 chezmoi git pull
 chezmoi apply
 ```
+
+### Updating Nix packages
+
+To update Nix packages to the latest versions in the pinned nixpkgs:
+
+```bash
+nix profile upgrade '.*'
+```
+
+To bump the nixpkgs pin itself (e.g. to get newer package versions):
+
+```bash
+cd $(chezmoi source-path)
+nix flake update
+nix profile upgrade '.*'
+```
+
+> **Note:** `flake.lock` is generated on first install and should be committed to pin exact package versions. If it doesn't exist yet, `nix profile install` will create it automatically.
 
 ## 📝 Making Changes
 
@@ -128,6 +146,8 @@ git push
 .
 ├── .chezmoi.toml.tmpl                    # Chezmoi configuration template
 ├── .chezmoiignore                        # Files to ignore
+├── flake.nix                             # Declarative Nix package list
+├── flake.lock                            # Pinned nixpkgs revision
 ├── run_once_install-packages.sh.tmpl     # Package installation script
 ├── run_once_after_setup-fish.sh.tmpl     # Fish shell setup script
 └── private_dot_config/                   # ~/.config directory

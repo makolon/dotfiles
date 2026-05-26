@@ -4,7 +4,18 @@ MIGRATION.md
 .git/
 .gitignore
 .DS_Store
+flake.nix
+flake.lock
 
 # ignore fish_variables
 private_dot_config/fish/fish_variables
+
+# macOS-only configs on non-darwin
+{{ if ne .chezmoi.os "darwin" }}
+private_dot_config/exact_aerospace/
+private_dot_config/exact_borders/
+private_dot_config/exact_sketchybar/
+private_dot_config/exact_kitty/
+private_dot_config/exact_ghostty/
+{{ end }}
 

@@ -2,11 +2,13 @@
 if test -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish'
     source '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish'
 end
-fish_add_path ~/.nix-profile/bin
 
 # Homebrew (for macOS GUI apps)
 fish_add_path /opt/homebrew/bin
 fish_add_path /opt/homebrew/sbin
+
+# Nix profile takes precedence over Homebrew
+fish_add_path ~/.nix-profile/bin
 
 # theme
 set fish_theme agnoster
