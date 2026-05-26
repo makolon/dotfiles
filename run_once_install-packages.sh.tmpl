@@ -2,39 +2,57 @@
 
 set -eufo pipefail
 
-echo "==> Installing Homebrew packages..."
+# =============================================================================
+# Nix: CLI tools
+# =============================================================================
 
-# Check if Homebrew is installed
+echo "==> Installing Nix packages..."
+
+if ! command -v nix &>/dev/null; then
+    echo "Nix is not installed. Installing via Determinate Systems installer..."
+    curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm
+
+    # Source nix for current session
+    if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+    fi
+fi
+
+nix_packages=(
+    "nixpkgs#fish"
+    "nixpkgs#neovim"
+    "nixpkgs#neofetch"
+    "nixpkgs#fastfetch"
+    "nixpkgs#starship"
+    "nixpkgs#fzf"
+    "nixpkgs#ghq"
+    "nixpkgs#peco"
+)
+
+for package in "${nix_packages[@]}"; do
+    pkg_name="${package#nixpkgs#}"
+    if nix profile list | grep -q "\.${pkg_name}\b"; then
+        echo "$pkg_name is already installed via Nix"
+    else
+        echo "Installing $pkg_name via Nix..."
+        nix profile install "$package"
+    fi
+done
+
+# =============================================================================
+# Homebrew: macOS GUI apps and platform-specific formulae
+# =============================================================================
+
+{{ if eq .chezmoi.os "darwin" -}}
+echo "==> Installing Homebrew packages (macOS GUI apps)..."
+
 if ! command -v brew &>/dev/null; then
     echo "Homebrew is not installed. Installing..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-# Update Homebrew
 brew update
 
-# Install formulae
-packages=(
-    "fish"
-    "neovim"
-    "neofetch"
-    "fastfetch"
-    "starship"
-    "fzf"
-    "ghq"
-    "peco"
-)
-
-for package in "${packages[@]}"; do
-    if brew list "$package" &>/dev/null; then
-        echo "$package is already installed"
-    else
-        echo "Installing $package..."
-        brew install "$package"
-    fi
-done
-
-# Install casks
 casks=(
     "nikitabobko/tap/aerospace"
     "kitty"
@@ -48,7 +66,6 @@ for cask in "${casks[@]}"; do
     else
         echo "Installing $cask..."
         if ! brew install --cask "$cask" 2>/dev/null; then
-            # If installation fails, check if it's already installed
             if brew list --cask "$cask_name" &>/dev/null; then
                 echo "$cask_name is now installed"
             else
@@ -58,7 +75,7 @@ for cask in "${casks[@]}"; do
     fi
 done
 
-# Install FelixKratz formulae
+# FelixKratz formulae (macOS-only)
 if ! brew tap | grep -q "FelixKratz/formulae"; then
     brew tap FelixKratz/formulae
 fi
@@ -76,5 +93,6 @@ for package in "${felixkratz_packages[@]}"; do
         brew install "$package"
     fi
 done
+{{ end -}}
 
 echo "==> All packages installed successfully!"

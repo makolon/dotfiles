@@ -2,6 +2,11 @@
 
 set -eufo pipefail
 
+# Source nix so nix-installed fish is on PATH
+if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+    . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+fi
+
 echo "==> Configuring Fish shell..."
 
 # Check if fish is installed
