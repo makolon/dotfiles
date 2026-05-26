@@ -20,7 +20,8 @@ This dotfiles repository includes configurations for:
 ### Prerequisites
 
 - macOS (tested on recent versions)
-- [Homebrew](https://brew.sh/) will be installed automatically if not present
+- [Nix](https://nixos.org/) — installed automatically via the [Determinate Systems installer](https://github.com/DeterminateSystems/nix-installer) for CLI tools
+- [Homebrew](https://brew.sh/) — installed automatically for macOS GUI apps and platform-specific formulae
 
 ### Installation
 
@@ -33,7 +34,7 @@ This dotfiles repository includes configurations for:
    This will:
    - Install chezmoi if not already installed
    - Clone this repository
-   - Run the setup scripts (install Homebrew packages, configure Fish shell, etc.)
+   - Run the setup scripts (install Nix + CLI packages, Homebrew casks, configure Fish shell, etc.)
    - Apply all dotfiles to your home directory
 
 2. The setup will prompt you for:
@@ -64,7 +65,7 @@ chezmoi apply
 
 The `run_once_install-packages.sh` script will automatically install:
 
-**Homebrew Formulae:**
+**Nix Packages (CLI tools):**
 - fish
 - neovim
 - neofetch
@@ -74,12 +75,12 @@ The `run_once_install-packages.sh` script will automatically install:
 - ghq
 - peco
 
-**Homebrew Casks:**
+**Homebrew Casks (macOS GUI apps):**
 - aerospace
 - kitty
 - ghostty
 
-**FelixKratz Formulae:**
+**Homebrew — FelixKratz Formulae (macOS-only):**
 - borders
 - sketchybar
 
