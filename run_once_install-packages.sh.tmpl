@@ -18,8 +18,16 @@ if ! command -v nix &>/dev/null; then
 fi
 
 CHEZMOI_SOURCE="{{ .chezmoi.sourceDir }}"
-echo "Installing CLI tools from flake at $CHEZMOI_SOURCE..."
-nix profile install "path:${CHEZMOI_SOURCE}"
+# `add` is the modern spelling of the deprecated `install`. If the flake is
+# already in the profile, upgrade it instead of re-adding (avoids the
+# "already added" warning and picks up flake.nix changes on re-run).
+if nix profile list 2>/dev/null | grep -q "path:${CHEZMOI_SOURCE}"; then
+    echo "Upgrading CLI tools from flake at $CHEZMOI_SOURCE..."
+    nix profile upgrade --all
+else
+    echo "Installing CLI tools from flake at $CHEZMOI_SOURCE..."
+    nix profile add "path:${CHEZMOI_SOURCE}"
+fi
 
 # =============================================================================
 # Homebrew: macOS GUI apps and platform-specific formulae
