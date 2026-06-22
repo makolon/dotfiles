@@ -15,6 +15,7 @@ This dotfiles repository includes configurations for:
 - **Prompt**: [Starship](https://starship.rs/) - Minimal, fast, and customizable prompt
 - **System Info**: [Fastfetch](https://github.com/fastfetch-cli/fastfetch) & [Neofetch](https://github.com/dylanaraps/neofetch)
 - **Notes**: [Obsidian](https://obsidian.md/) - Markdown knowledge base (macOS GUI app via Homebrew cask)
+- **AI Coding**: [Claude Code](https://claude.com/product/claude-code) - Terminal-based AI coding assistant (via Homebrew cask)
 
 ## 🚀 Quick Start
 
@@ -81,6 +82,7 @@ CLI tools are managed declaratively via `flake.nix` with pinned versions (`flake
 - kitty
 - ghostty
 - obsidian
+- claude-code
 
 **Homebrew — FelixKratz Formulae (macOS-only):**
 - borders
