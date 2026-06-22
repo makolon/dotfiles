@@ -24,6 +24,10 @@
               fzf
               ghq
               peco
+              # Node.js runtime — prerequisite for OpenClaw (`npm install -g openclaw`,
+              # recommended Node 24). If nodejs_24 is absent in the pinned nixpkgs,
+              # fall back to nodejs_22 (OpenClaw supports 22.19+).
+              nodejs_24
             ];
           };
         }

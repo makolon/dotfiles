@@ -10,6 +10,12 @@ fish_add_path /opt/homebrew/sbin
 # Nix profile takes precedence over Homebrew
 fish_add_path ~/.nix-profile/bin
 
+# npm global packages — Nix-provided node has a read-only store prefix, so point
+# global installs at a writable dir. Lets `npm install -g openclaw` (and other
+# global CLIs) work. Created on first global install.
+set -gx NPM_CONFIG_PREFIX ~/.npm-global
+fish_add_path ~/.npm-global/bin
+
 # theme
 set fish_theme agnoster
 

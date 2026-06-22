@@ -14,6 +14,8 @@ This dotfiles repository includes configurations for:
 - **Editor**: [Neovim](https://github.com/neovim/neovim) - Hyperextensible Vim-based text editor
 - **Prompt**: [Starship](https://starship.rs/) - Minimal, fast, and customizable prompt
 - **System Info**: [Fastfetch](https://github.com/fastfetch-cli/fastfetch) & [Neofetch](https://github.com/dylanaraps/neofetch)
+- **Notes**: [Obsidian](https://obsidian.md/) - Markdown knowledge base (macOS GUI app via Homebrew cask)
+- **AI Assistant**: [OpenClaw](https://github.com/openclaw/openclaw) - Self-hosted personal AI agent (manual npm install — see the OpenClaw section below)
 
 ## 🚀 Quick Start
 
@@ -74,15 +76,40 @@ CLI tools are managed declaratively via `flake.nix` with pinned versions (`flake
 - fzf
 - ghq
 - peco
+- nodejs (Node.js 24 — runtime for OpenClaw's `npm install -g`)
 
 **Homebrew Casks (macOS GUI apps):**
 - aerospace
 - kitty
 - ghostty
+- obsidian
 
 **Homebrew — FelixKratz Formulae (macOS-only):**
 - borders
 - sketchybar
+
+## 🤖 OpenClaw (optional, manual install)
+
+[OpenClaw](https://github.com/openclaw/openclaw) is a self-hosted personal AI
+assistant. It is intentionally **not auto-installed** by the setup scripts. Node.js
+is provided via `flake.nix`, and the npm global prefix (`~/.npm-global`) is set in
+the Fish config, so you install and onboard OpenClaw yourself whenever you want it:
+
+```bash
+# Node.js 24 comes from Nix; npm global installs go to ~/.npm-global (on PATH).
+npm install -g openclaw@latest
+
+# Guided setup: workspace, channels, skills, and (optionally) the always-on daemon.
+openclaw onboard --install-daemon
+```
+
+You'll need an API key from your chosen model provider. OpenClaw keeps its config
+and state under its own directory (e.g. `~/.openclaw`), which is **not** tracked in
+this repo — keep credentials out of version control, the same as any other secret.
+
+> Requires Node 24 (recommended) or Node 22.19+. If `npm install -g` reports a
+> read-only path, confirm `echo $NPM_CONFIG_PREFIX` points at `~/.npm-global` (set
+> by the Fish config) and that `~/.npm-global/bin` is on your `PATH`.
 
 ## 🔧 Updating
 
