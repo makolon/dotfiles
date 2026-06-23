@@ -13,6 +13,7 @@
       packages = forAllSystems (system:
         let pkgs = nixpkgs.legacyPackages.${system};
         in {
+          # Core CLI environment — always installed (`nix profile add path:.`).
           default = pkgs.buildEnv {
             name = "makolon-cli";
             paths = with pkgs; [
@@ -26,6 +27,13 @@
               peco
             ];
           };
+
+          # Optional, individually selectable Nix packages. The package picker in
+          # run_once_install-packages.sh.tmpl installs the chosen ones via
+          # `nix profile add path:.#<name>`. To add one: expose it here and add a
+          # matching `nix` line to that script's `optional_items` manifest.
+          bat = pkgs.bat;
+          htop = pkgs.htop;
         }
       );
     };

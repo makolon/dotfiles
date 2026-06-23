@@ -65,28 +65,47 @@ chezmoi apply
 
 ## 📦 What Gets Installed
 
-CLI tools are managed declaratively via `flake.nix` with pinned versions (`flake.lock`). macOS GUI apps use Homebrew casks.
+Packages are split into **core** (always installed) and **optional** (chosen via
+an interactive picker on first install — see below). CLI tools come from Nix
+(`flake.nix`, pinned with `flake.lock`); macOS GUI apps come from Homebrew casks.
 
-**Nix Packages (CLI tools, declared in `flake.nix`):**
-- fish
-- neovim
-- neofetch
-- fastfetch
-- starship
-- fzf
-- ghq
-- peco
+**Core — always installed**
 
-**Homebrew Casks (macOS GUI apps):**
-- aerospace
-- kitty
-- ghostty
-- obsidian
-- claude-code
+- Nix (CLI): `fish`, `neovim`, `neofetch`, `fastfetch`, `starship`, `fzf`, `ghq`, `peco`
+- Homebrew casks: `kitty`, `ghostty`
 
-**Homebrew — FelixKratz Formulae (macOS-only):**
-- borders
-- sketchybar
+**Optional — pick what you want**
+
+| Package | Source | Default |
+|---|---|---|
+| aerospace | cask | on |
+| obsidian | cask | on |
+| claude-code | cask | on |
+| borders | formula (FelixKratz) | on |
+| sketchybar | formula (FelixKratz) | on |
+| bat | nix | off |
+| htop | nix | off |
+
+### 🧰 Interactive package selection
+
+On first install, `run_once_install-packages.sh.tmpl` shows a styled
+[gum](https://github.com/charmbracelet/gum) checklist to choose the optional
+packages (space toggles, enter confirms). gum runs on demand via
+`nix run nixpkgs#gum` — nothing to pre-install.
+
+- Your choice is saved to `~/.config/dotfiles/packages.selected`, so re-runs and
+  other machines are reproducible.
+- With no TTY (CI/unattended), the saved set — or the defaults — is used; no prompt.
+- Env knobs: `DOTFILES_NONINTERACTIVE=1` (skip the prompt), `DOTFILES_RESELECT=1`
+  (ignore the saved choice, start from defaults), `DRY_RUN=1` (print install
+  commands without running them).
+
+**Add your own optional package:** add a line to the `optional_items` manifest in
+`run_once_install-packages.sh.tmpl` — format `key|label|method|default|target`,
+where method is `cask` / `formula` / `nix` / `npm`. For a `nix` package, also
+expose it in `flake.nix` (e.g. `htop = pkgs.htop;`). An `openclaw`-style `npm`
+example is left commented in the manifest (it needs Node.js — add `nodejs_24` to
+the flake's core list first).
 
 ## 🔧 Updating
 
